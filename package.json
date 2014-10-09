@@ -1,0 +1,25 @@
+{
+  "name": "Invitify-API",
+  "version": "0.1.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "Narendra Mandadapu",
+  "license": "MIT",
+  "bugs": {
+    "url": ""
+  },
+  "dependencies": {
+    "ejs": "*",
+    "ejs-middleware": ">= 0.0.3",
+	"mongoose": "3.8.17",
+    "express": "4.8.1",
+    "body-parser": "1.0.2"
+  }
+}
