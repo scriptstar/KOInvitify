@@ -1,6 +1,6 @@
 > A full fledged Knockout.js application with Node.js as a backend and REST API implemented with latest MongoDB, Mongoose and Express 4
 
-# Express.js 4.x
+# Invitify 1.0
 
 `master` branch
 
