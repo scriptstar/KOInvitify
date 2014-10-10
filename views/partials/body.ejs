@@ -1,0 +1,17 @@
+  <h1 class="site-title">
+    <a href="/">Invitify <span class="version">(alpha)</span></a>
+</h1>
+<div class="main-container">
+    <div data-bind="ifnot: id">
+        <% include invitation-creating %>
+    </div>
+
+    <div data-bind="if: id">
+        <% include invitation-done %>
+    </div>
+
+    <script>
+        ko.applyBindings(new invitationViewModel());
+        $("textarea").focus();
+    </script>
+</div>

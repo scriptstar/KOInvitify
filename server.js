@@ -11,14 +11,13 @@ var express     	= require("express"),
 	logger 			= require('morgan'),
 	cookieParser 	= require('cookie-parser');
 	
+app.use(router);
+app.use('/api', api); // we attach our routes under /api
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-
-app.use(router);
-app.use('/api', api); // we attach our routes under /api
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
@@ -30,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function(req, res) {
   res.render('index', {title:'Hello World'})
 });
+
 
 app.listen(port);
 console.log("App active on localhost:" + port);
