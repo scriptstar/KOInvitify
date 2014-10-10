@@ -1,19 +1,35 @@
-var express     = require("express"),
-    router      = express.Router(),
-    api         = require('./api/server.js'),
-    bodyParser  = require('body-parser'),
-    app         = express(),
-    port        = process.env.port || 4000,
-    path        = require('path'),
-    ejsMiddleware = require('ejs-middleware');
+var express     	= require("express"),
+    router      	= express.Router(),
+	path 			= require('path'),
+	avicon 			= require('serve-favicon'),
+    api         	= require('./api/server.js'),
+    bodyParser  	= require('body-parser'),
+    app         	= express(),
+    port        	= process.env.port || 4000,
+    path        	= require('path'),
+    ejs 			= require('ejs'),
+	logger 			= require('morgan'),
+	cookieParser 	= require('cookie-parser');
+	
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 
 app.use(router);
 app.use('/api', api); // we attach our routes under /api
+// uncomment after placing your favicon in /public
+//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use(ejsMiddleware(__dirname + '/static', 'html', app)); // Serve .html files via EJS renderer
-app.engine('.html', require('ejs').renderFile);
-app.use(express.static(__dirname + '/static')); // For other requests, just serve /static
-
+app.get('/', function(req, res) {
+  res.render('index', {title:'Hello World'})
+});
 
 app.listen(port);
 console.log("App active on localhost:" + port);

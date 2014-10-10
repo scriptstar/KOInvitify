@@ -7,7 +7,7 @@ var express     = require('express'),
     vote        = require('./models/vote.js');
 
 var app = module.exports = express();
-app.use(bodyParser())
+app.use(bodyParser.json());
 
 mongoose.connect(config.creds.mongoose_auth);
 
