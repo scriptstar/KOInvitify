@@ -47,17 +47,18 @@ app.post('/invitations', function (req, res) {
 
 app.post('/invitations/:id/votes', function (req, res) {
     var myId = ObjectId(req.params.id);
-    var status = 404
+    var status_404 = 404
+    var status = 200
     var result = Invitation.findById(myId, function (err, invitation) {
         if (invitation) {
             invitation.votes.push(new vote(req.body));
             invitation.save(function () {
                 app.emit('invitationUpdate', invitation);
-                res.staus(status).send();
+                res.status(200).send();
             });
         }
         else {
-            res.status(status).send();
+            res.status(status_404).send();
         }
     });
 });

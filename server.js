@@ -1,22 +1,23 @@
 var express     	= require("express"),
+    app         	= express(),
+    server          = require('http').Server(app),
     router      	= express.Router(),
 	path 			= require('path'),
 	avicon 			= require('serve-favicon'),
     api         	= require('./api/server.js'),
     bodyParser  	= require('body-parser'),
-    app         	= express(),
     port        	= process.env.port || 4000,
     path        	= require('path'),
-    ejs 			= require('ejs'),
+    ejslocals       = require('ejs-locals')
 	logger 			= require('morgan'),
+    engine          = require('ejs-locals'),
 	cookieParser 	= require('cookie-parser');
 	
 app.use(router);
 app.use('/api', api); // we attach our routes under /api
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'html');
+app.engine('.html', engine);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -26,12 +27,35 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.get('/', function(req, res) {
-  res.render('index', {title:'Hello World'})
+  res.render('index.html')
 });
 
+app.get('/rsvp', function(req, res) {
+  res.render('rsvp.html')
+});
 
-app.listen(port);
+// Enable socket.io, making it part of the /api/* space
+var io = require('socket.io').listen(server);
+
+io.on('connection', function (socket) {
+    // Keep track of which invitation each client is looking at
+    var interestedInInvitationId;
+    socket.on('registerInterest', function (data) {
+        console.log("registerInterest: " + data);
+        interestedInInvitationId = data;
+    });
+
+    api.on('invitationUpdate', function (item) {
+        // Only send updates to the client if they care about it
+        if (item.id === interestedInInvitationId) {
+            socket.emit('invitationUpdate', item);
+        }
+    });
+});
+
+server.listen(port);
 console.log("App active on localhost:" + port);
 
 /*
